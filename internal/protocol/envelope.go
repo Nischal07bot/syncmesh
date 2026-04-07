@@ -1,5 +1,10 @@
 package protocol
 
+import (
+	"encoding/json"
+	"errors"
+	"time"
+)
 type Envelope struct {
 	ID  string  `json:"id"`
 	Type string `json:"type"`
@@ -11,8 +16,7 @@ type Envelope struct {
 	Meta    map[string]interface{} `json:"meta"`
 }
 
-func New(eventType string, roomID string, userID string, serverID string, payload map[string]interface{}) *Envelope 
-{
+func New(eventType string, roomID string, userID string, serverID string, payload map[string]interface{}) *Envelope {
 	return &Envelope{
 		ID:        generateUniqueID(),
 		Type:      eventType,
@@ -50,6 +54,6 @@ func Validate(e *Envelope) error {
 	return nil
 }
 
-func generateID() string {
+func generateUniqueID() string {
 	return time.Now().Format("20060102150405.000000000")
 }
