@@ -28,3 +28,28 @@ func New(eventType string, roomID string, userID string, serverID string, payloa
 func Encode(e *Envelope) ([]byte, error) {
 	return json.Marshal(e)
 }
+
+func Decode(data []byte) (*Envelope, error) {
+	var e Envelope
+	if err := json.Unmarshal(data, &e); err != nil {
+		return nil, err
+	}
+	return &e, nil
+}
+
+func Validate(e *Envelope) error {
+	if e.Type == "" {
+		return errors.New("missing type")
+	}
+	if e.RoomID == "" {
+		return errors.New("missing room_id")
+	}
+	if e.UserID == "" {
+		return errors.New("missing user_id")
+	}
+	return nil
+}
+
+func generateID() string {
+	return time.Now().Format("20060102150405.000000000")
+}
